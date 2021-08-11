@@ -5,23 +5,49 @@
 {{ define "main" }}
 {{ partial "hero-image-setheight.html" (dict "background" .Params.heroBackground "heading" .Params.heroHeading "subheading" .Params.heroSubHeading "content" .)}}
 
-{{ $headless := .Site.GetPage "/pages/about" }}
+<!-- {{ $headless := .Site.GetPage "/pages/about" }} -->
+{{ $headless := .Page  }}
 {{ $subpages := $headless.Resources.ByType "page" }}
-{{ $subpages := sort $subpages ".Params.weight" }}
+{{ $subpages := sort $subpages ".Name" }}
+
 {{ range $subpages }}
+
+{{ $original := $headless.Resources.Match (printf "*%s*" (.Params.image)) }}
+
+{{ range  $original}}
+  {{ $headless.Scratch.Set "image" (.Resize "300x") }}
+{{ end }}
+{{ $image := $headless.Scratch.Get "image" }}
+
 <div class="strip bg-cover bg-position-top bg-overlay" style="background-image: url('{{ .Params.background | relURL }}');">
-  <div class="container pt-17 pb-17">
+  <div class="container pt-5 pb-5">
+    
     <div class="row">
-      <div class="col-12 col-md-6 {{ if eq .Params.align "right" }}offset-md-6{{ end }}">
-        <h2 class="text-primary text-capitalize">{{ .Title }}</h2>
+      <h2 class="text-primary text-capitalize col-12 col-md-8 {{ if  eq .Params.align "right" }}offset-md-4{{ end }}">{{ .Title }}</h2>
+    </div>
+
+    <div class="row">
+      {{ if and (.Params.image) (eq .Params.align "right") }}
+        <div class="col-12 col-md-4">
+          <img class="img-fluid" src="{{ $image.RelPermalink | relURL }}" />
+        </div>
+      {{ end }}
+
+      <div class="col-12 col-md-8 {{ if and (not .Params.image) (eq .Params.align "right") }}offset-md-4{{ end }}">
         {{ .Content }}
         {{ if .Params.button }}
           <a class="button" href="{{ .Params.buttonLink | relURL }}">{{ .Params.button }}</a>
         {{ end }}
       </div>
+      {{ if and (.Params.image) (eq .Params.align "left") }}
+        <div class="col-12 col-md-4">
+          <img class="img-fluid" src="{{ $image.RelPermalink | relURL }}" />
+        </div>
+      {{ end }}
     </div>
   </div>
 </div>
+
 {{ end }}
 
 {{ .Content }}

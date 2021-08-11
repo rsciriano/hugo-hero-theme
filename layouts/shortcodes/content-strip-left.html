@@ -5,17 +5,20 @@
 {{ with $page }}
 {{ $resource := $page.Resources.GetMatch (printf "**%s*" $match ) }}
 {{ with $resource }}
-<div class="strip bg-cover bg-position-center bg-overlay pt-15 pb-15" style="background-image: url(' {{ .Params.background | relURL }} ');">
+<div class="strip bg-cover bg-position-center bg-overlay pt-5 pb-5" style="background-image: url(' {{ .Params.background | relURL }} ');">
   <div class="container">
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-8 pt-10 pb-10" off>
           {{ .Content }}
           {{ if .Params.button }}
           <a class="button button-primary" href="{{ .Params.buttonLink | relURL }}">{{ .Params.button}}</a>
           {{ end }}
-      </div>
+        </div>
+        <div class="col-12 col-md-4 pt-5 pb-5" off>
+          <img class="img-fluid" src="{{ .Params.image | relURL }}" />
+        </div>    
+      </div>    
     </div>
   </div>
-</div>
 {{ end }}
 {{ end }}

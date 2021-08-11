@@ -3,5 +3,9 @@
 {{ define "header_classes" }}{{ end }}
 
 {{ define "main" }}
-{{ .Content }}
+{{ partial "hero-image-setheight.html" (dict "background" .Params.heroBackground "heading" .Params.heroHeading "subheading" .Params.heroSubHeading "content" .)}}
+
+<div class="container pt-2 pb-2">
+    {{ .Content }}
+</div>
 {{ end }}

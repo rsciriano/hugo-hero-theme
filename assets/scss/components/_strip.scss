@@ -53,3 +53,10 @@
 .strip-bg-cover {
   background-size: cover;
 }
+
+.strip-border {
+  border-top: 2px;
+  border-top-style: solid;
+  background-clip: border-box; 
+  border-image: linear-gradient(to right, $primary, $secondary);
+}
